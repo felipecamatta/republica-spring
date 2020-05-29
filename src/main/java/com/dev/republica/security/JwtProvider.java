@@ -71,7 +71,7 @@ public class JwtProvider {
 
     private PublicKey getPublickey() {
         try {
-            return keyStore.getCertificate("republica").getPublicKey();
+            return keyStore.getCertificate("republicaspring").getPublicKey();
         } catch (KeyStoreException e) {
             throw new SpringRepublicaException("Exception occured while " +
                     "retrieving public key from keystore");
