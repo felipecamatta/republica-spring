@@ -1,0 +1,41 @@
+package com.dev.republica.controller;
+
+import com.dev.republica.dto.MoradorRequest;
+import com.dev.republica.dto.MoradorResponse;
+import com.dev.republica.service.MoradorService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/moradores")
+@AllArgsConstructor
+public class MoradorController {
+
+    private final MoradorService moradorService;
+
+    @GetMapping
+    public ResponseEntity<List<MoradorResponse>> getAllMoradores(@RequestParam(defaultValue = "") String nome) {
+        return ResponseEntity.ok().body(moradorService.getAllMoradores(nome));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MoradorResponse> getMorador(@PathVariable Long id) {
+        return ResponseEntity.ok().body(moradorService.getMorador(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> create(@RequestBody MoradorRequest moradorRequest) {
+        moradorService.save(moradorRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MoradorResponse> update(@PathVariable Long id, @RequestBody MoradorRequest moradorRequest) {
+        return ResponseEntity.ok().body(moradorService.update(id, moradorRequest));
+    }
+
+}
