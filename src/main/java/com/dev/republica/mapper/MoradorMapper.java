@@ -21,8 +21,9 @@ public interface MoradorMapper {
 
     void updateMoradorFromRequest(MoradorRequest moradorRequest, @MappingTarget Morador morador);
 
+    @Mapping(expression = "java(morador.getRepublica().getId())", target = "idRepublica")
     MoradorResponse moradorToResponse(Morador morador);
 
-    List<MoradorResponse> moradoresToResponses(List<Morador> moradores);
+    List<MoradorResponse> moradoresToResponse(List<Morador> moradores);
 
 }

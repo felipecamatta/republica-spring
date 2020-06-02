@@ -24,7 +24,7 @@ public class MoradorService {
 
     @Transactional(readOnly = true)
     public List<MoradorResponse> getAllMoradores(String nome) {
-        return MoradorMapper.INSTANCE.moradoresToResponses(moradorRepository.findByNomeContaining(nome));
+        return MoradorMapper.INSTANCE.moradoresToResponse(moradorRepository.findByNomeContaining(nome));
     }
 
     @Transactional(readOnly = true)

@@ -42,4 +42,7 @@ public class User {
             @JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
+    @OneToOne(mappedBy = "user")
+    private Morador morador;
+
 }

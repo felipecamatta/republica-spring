@@ -11,6 +11,8 @@ public class MoradorResponse {
 
     private Long id;
 
+    private Long idRepublica;
+
     private String nome;
 
     private String apelido;
