@@ -5,13 +5,10 @@ import com.dev.republica.dto.RepublicaResponse;
 import com.dev.republica.exception.MoradorNotFoundException;
 import com.dev.republica.exception.RepublicaNotFoundException;
 import com.dev.republica.mapper.RepublicaMapper;
-import com.dev.republica.model.Morador;
-import com.dev.republica.model.Republica;
-import com.dev.republica.model.Role;
-import com.dev.republica.model.User;
+import com.dev.republica.model.*;
+import com.dev.republica.repository.HistoricoMoradorRepository;
 import com.dev.republica.repository.MoradorRepository;
 import com.dev.republica.repository.RepublicaRepository;
-import com.dev.republica.repository.RoleRepository;
 import com.dev.republica.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +27,7 @@ public class RepublicaService {
 
     private final AuthService authService;
     private final RoleService roleService;
+    private final HistoricoMoradorRepository historicoMoradorRepository;
     private final MoradorRepository moradorRepository;
     private final RepublicaRepository republicaRepository;
     private final UserRepository userRepository;
@@ -64,6 +63,8 @@ public class RepublicaService {
         userRepresentante.addRole(roleService.getMoradorRole());
         userRepresentante.addRole(roleService.getRepresentanteRole());
         userRepository.save(userRepresentante);
+
+        historicoMoradorRepository.save(new HistoricoMorador(representante, republica));
 
         moradorRepository.save(representante);
     }
@@ -104,6 +105,8 @@ public class RepublicaService {
             userMorador.addRole(roleService.getMoradorRole());
             userRepository.save(userMorador);
 
+            historicoMoradorRepository.save(new HistoricoMorador(morador, republica));
+
             return true;
         }
 
@@ -127,6 +130,10 @@ public class RepublicaService {
                     .orElseThrow();
             userMorador.removeRole(roleService.getMoradorRole());
             userRepository.save(userMorador);
+
+            HistoricoMorador historicoMorador = historicoMoradorRepository.findTopByMoradorOrderByIdDesc(morador);
+            historicoMorador.setDataSaida(new Date());
+            historicoMoradorRepository.save(historicoMorador);
 
             return true;
         }
