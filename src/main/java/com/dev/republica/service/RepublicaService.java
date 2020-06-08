@@ -6,10 +6,7 @@ import com.dev.republica.exception.MoradorNotFoundException;
 import com.dev.republica.exception.RepublicaNotFoundException;
 import com.dev.republica.mapper.RepublicaMapper;
 import com.dev.republica.model.*;
-import com.dev.republica.repository.HistoricoMoradorRepository;
-import com.dev.republica.repository.MoradorRepository;
-import com.dev.republica.repository.RepublicaRepository;
-import com.dev.republica.repository.UserRepository;
+import com.dev.republica.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +25,7 @@ public class RepublicaService {
     private final AuthService authService;
     private final RoleService roleService;
     private final HistoricoMoradorRepository historicoMoradorRepository;
+    private final HistoricoRepresentanteRepository historicoRepresentanteRepository;
     private final MoradorRepository moradorRepository;
     private final RepublicaRepository republicaRepository;
     private final UserRepository userRepository;
@@ -66,6 +64,8 @@ public class RepublicaService {
 
         historicoMoradorRepository.save(new HistoricoMorador(representante, republica));
 
+        historicoRepresentanteRepository.save(new HistoricoRepresentante(republica, representante));
+
         moradorRepository.save(representante);
     }
 
@@ -87,6 +87,7 @@ public class RepublicaService {
     public void delete(Long id) {
     }
 
+    @Transactional
     public boolean adicionarMorador(Long idRepublica, Long idMorador) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
@@ -113,6 +114,7 @@ public class RepublicaService {
         return false;
     }
 
+    @Transactional
     public boolean removerMorador(Long idRepublica, Long idMorador) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
@@ -141,6 +143,7 @@ public class RepublicaService {
         return false;
     }
 
+    @Transactional
     public boolean alterarRepresentante(Long idRepublica, Long idNovoRepresentante) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
@@ -171,6 +174,13 @@ public class RepublicaService {
             userRepository.save(userNovoRepresentante);
 
             republicaRepository.save(republica);
+
+            HistoricoRepresentante historicoRepresentante = historicoRepresentanteRepository.findTopByRepublicaOrderByIdDesc(republica);
+            historicoRepresentante.setDataFimMandato(new Date());
+            historicoRepresentanteRepository.save(historicoRepresentante);
+
+            historicoRepresentanteRepository.save(new HistoricoRepresentante(republica, novoRepresentante));
+
             return true;
         }
 
