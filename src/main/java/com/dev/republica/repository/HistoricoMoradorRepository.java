@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface HistoricoMoradorRepository extends JpaRepository<HistoricoMorador, Long> {
 
-    List<HistoricoMoradorRepository> findByMorador(Morador morador);
+    List<HistoricoMorador> findByMorador(Morador morador);
 
     HistoricoMorador findTopByMoradorOrderByIdDesc(Morador morador);
 
