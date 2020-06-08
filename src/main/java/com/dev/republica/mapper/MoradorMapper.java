@@ -7,11 +7,12 @@ import com.dev.republica.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper( nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT )
 public interface MoradorMapper {
 
     MoradorMapper INSTANCE = Mappers.getMapper(MoradorMapper.class);
@@ -21,7 +22,7 @@ public interface MoradorMapper {
 
     void updateMoradorFromRequest(MoradorRequest moradorRequest, @MappingTarget Morador morador);
 
-    @Mapping(expression = "java(morador.getRepublica().getId())", target = "idRepublica")
+    @Mapping(expression = "java(morador.getRepublica() != null ? morador.getRepublica().getId() : null)", target = "idRepublica")
     MoradorResponse moradorToResponse(Morador morador);
 
     List<MoradorResponse> moradoresToResponse(List<Morador> moradores);

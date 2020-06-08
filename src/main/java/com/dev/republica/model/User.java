@@ -45,4 +45,12 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Morador morador;
 
+    public boolean addRole(Role role) {
+        return getRoles().add(role);
+    }
+
+    public boolean removeRole(Role role) {
+        return getRoles().remove(role);
+    }
+
 }

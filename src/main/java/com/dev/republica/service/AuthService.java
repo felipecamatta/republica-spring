@@ -47,9 +47,9 @@ public class AuthService {
 
         List<Role> roles = new ArrayList<>();
 
-        Role adminRole = roleRepository.findByName(Authorities.ROLE_SEMTETO)
+        Role semTetoRole = roleRepository.findByName(Authorities.ROLE_SEMTETO)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        roles.add(adminRole);
+        roles.add(semTetoRole);
 
         user.setRoles(roles);
 

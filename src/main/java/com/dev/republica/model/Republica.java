@@ -69,23 +69,27 @@ public class Republica {
     }
 
     public boolean adicionarMorador(Morador morador) {
-        if (this.numeroVagasDisponiveis > 0) {
-            boolean add = moradores.add(morador);
-            if (add) {
-                this.numeroVagasDisponiveis--;
-                morador.setRepublica(this);
+        if (morador.getRepublica() == null) {
+            if (this.numeroVagasDisponiveis > 0) {
+                boolean add = moradores.add(morador);
+                if (add) {
+                    this.numeroVagasDisponiveis--;
+                    morador.setRepublica(this);
+                }
+                return add;
             }
-            return add;
         }
         return false;
     }
 
     public boolean removerMorador(Morador morador) {
-        if (moradores.contains(morador)) {
-            if (moradores.remove(morador)) {
-                morador.setRepublica(null);
-                this.numeroVagasDisponiveis++;
-                return true;
+        if (!this.getRepresentante().equals(morador)) {
+            if (moradores.contains(morador)) {
+                if (moradores.remove(morador)) {
+                    morador.setRepublica(null);
+                    this.numeroVagasDisponiveis++;
+                    return true;
+                }
             }
         }
         return false;
