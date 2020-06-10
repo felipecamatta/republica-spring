@@ -111,6 +111,7 @@ public class TarefaService {
         tarefaRepository.delete(tarefa);
     }
 
+    @Transactional
     public void resolver(Long idMorador, Long idTarefa, MoradorTarefaResolver comentario) {
         Morador morador = moradorRepository.findById(idMorador)
                 .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
