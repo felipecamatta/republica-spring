@@ -15,4 +15,6 @@ public class ConviteResponse {
 
     String moradorNome;
 
+    String status;
+
 }

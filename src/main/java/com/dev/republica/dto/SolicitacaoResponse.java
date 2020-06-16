@@ -15,4 +15,6 @@ public class SolicitacaoResponse {
 
     String moradorNome;
 
+    String status;
+
 }

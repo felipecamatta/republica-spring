@@ -15,6 +15,7 @@ public interface SolicitacaoMapper {
 
     @Mapping(expression = "java(solicitacao.getSolicitante().getNome())", target = "moradorNome")
     @Mapping(expression = "java(solicitacao.getRepublica().getNome())", target = "republicaNome")
+    @Mapping(source = "status", target = "status")
     SolicitacaoResponse solicitacaoToResponse(Solicitacao solicitacao);
 
     List<SolicitacaoResponse> solicitacoesToResponse(List<Solicitacao> solicitacoes);

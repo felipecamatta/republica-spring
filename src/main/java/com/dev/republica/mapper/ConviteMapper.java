@@ -15,6 +15,7 @@ public interface ConviteMapper {
 
     @Mapping(expression = "java(convite.getConvidado().getNome())", target = "moradorNome")
     @Mapping(expression = "java(convite.getRepublica().getNome())", target = "republicaNome")
+    @Mapping(source = "status", target = "status")
     ConviteResponse conviteToResponse(Convite convite);
 
     List<ConviteResponse> convitesToResponse(List<Convite> convite);
