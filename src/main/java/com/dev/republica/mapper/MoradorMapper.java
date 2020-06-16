@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper( nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT )
+@Mapper(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface MoradorMapper {
 
     MoradorMapper INSTANCE = Mappers.getMapper(MoradorMapper.class);

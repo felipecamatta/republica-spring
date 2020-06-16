@@ -1,10 +1,8 @@
 package com.dev.republica.controller;
 
-import com.dev.republica.dto.MoradorTarefaDto;
 import com.dev.republica.dto.MoradorTarefaResolver;
 import com.dev.republica.dto.TarefaRequest;
 import com.dev.republica.dto.TarefaResponse;
-import com.dev.republica.model.MoradorTarefa;
 import com.dev.republica.service.TarefaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

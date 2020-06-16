@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.Date;
 import java.util.List;
 
-@Mapper( imports = Date.class, uses = MoradorMapper.class )
+@Mapper(imports = Date.class, uses = MoradorMapper.class)
 public interface RepublicaMapper {
 
     RepublicaMapper INSTANCE = Mappers.getMapper(RepublicaMapper.class);

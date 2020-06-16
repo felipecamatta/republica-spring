@@ -16,7 +16,7 @@ public class ConviteController {
     private final ConviteService conviteService;
 
     @GetMapping("/republicas/{idRepublica}/convites")
-    public ResponseEntity<List<ConviteResponse>> getByRepublica(@PathVariable  Long idRepublica) {
+    public ResponseEntity<List<ConviteResponse>> getByRepublica(@PathVariable Long idRepublica) {
         return ResponseEntity.ok(conviteService.getByRepublica(idRepublica));
     }
 

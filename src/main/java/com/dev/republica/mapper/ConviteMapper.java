@@ -13,7 +13,6 @@ public interface ConviteMapper {
 
     ConviteMapper INSTANCE = Mappers.getMapper(ConviteMapper.class);
 
-
     @Mapping(expression = "java(convite.getConvidado().getNome())", target = "moradorNome")
     @Mapping(expression = "java(convite.getRepublica().getNome())", target = "republicaNome")
     ConviteResponse conviteToResponse(Convite convite);

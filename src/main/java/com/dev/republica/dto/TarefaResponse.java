@@ -1,6 +1,5 @@
 package com.dev.republica.dto;
 
-import com.dev.republica.model.MoradorTarefa;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
