@@ -35,7 +35,7 @@ public interface TarefaMapper {
     @Mapping(source = "republica", target = "republica")
     Tarefa toTarefa(TarefaRequest tarefaRequest, Republica republica);
 
-    @Mapping(source = "tarefa.id", target = "republicaId")
+    @Mapping(expression = "java(tarefa.getRepublica().getId())", target = "republicaId")
     @Mapping(source = "tarefa.moradorTarefas", target = "moradorTarefasDto")
     TarefaResponse tarefaToResponse(Tarefa tarefa);
 
