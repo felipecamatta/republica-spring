@@ -31,21 +31,21 @@ public class FeedbackService {
 
     public FeedbackResponse getFeedback(Long id) {
         Feedback feedback = feedbackRepository.findById(id)
-                .orElseThrow(() -> new FeedbackNotFoundException(id.toString()));
+                .orElseThrow(() -> new FeedbackNotFoundException(id));
 
         return FeedbackMapper.INSTANCE.feedbackToResponse(feedback);
     }
 
     public List<FeedbackResponse> getFeedbackByRepublica(Long idRepublica) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         return FeedbackMapper.INSTANCE.feedbacksToResponse(feedbackRepository.findByRepublica(republica));
     }
 
     public void save(FeedbackRequest feedbackRequest, Long idRepublica) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = authService.getCurrentUser().getMorador();
 
@@ -60,7 +60,7 @@ public class FeedbackService {
 
     public void delete(Long id) {
         Feedback feedback = feedbackRepository.findById(id)
-                .orElseThrow(() -> new FeedbackNotFoundException(id.toString()));
+                .orElseThrow(() -> new FeedbackNotFoundException(id));
 
         feedback.setStatus("EXCLUIDO");
 
@@ -69,7 +69,7 @@ public class FeedbackService {
 
     public void resolver(Long id) {
         Feedback feedback = feedbackRepository.findById(id)
-                .orElseThrow(() -> new FeedbackNotFoundException(id.toString()));
+                .orElseThrow(() -> new FeedbackNotFoundException(id));
 
         if (feedback.getStatus().equals("RESOLVIDO-PENDENTE")) {
             feedback.setStatus("RESOLVIDO");

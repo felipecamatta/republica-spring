@@ -32,24 +32,24 @@ public class TarefaService {
 
     public TarefaResponse getTarefa(Long id) {
         Tarefa tarefa = tarefaRepository.findById(id)
-                .orElseThrow(() -> new TarefaNotFoundException(id.toString()));
+                .orElseThrow(() -> new TarefaNotFoundException(id));
 
         return TarefaMapper.INSTANCE.tarefaToResponse(tarefa);
     }
 
     public List<TarefaResponse> getTarefaByRepublica(Long id) {
         Republica republica = republicaRepository.findById(id)
-                .orElseThrow(() -> new RepublicaNotFoundException(id.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(id));
 
         return TarefaMapper.INSTANCE.tarefasToResponse(tarefaRepository.findByRepublica(republica));
     }
 
     public List<TarefaResponse> getTarefaByRepublicaAndMorador(Long idRepublica, Long idMorador) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         return TarefaMapper.INSTANCE.tarefasToResponse(tarefaRepository.findByRepublicaAndMorador(republica, morador));
     }
@@ -57,7 +57,7 @@ public class TarefaService {
     @Transactional
     public void save(TarefaRequest tarefaRequest, Long idRepublica) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Tarefa tarefa = TarefaMapper.INSTANCE.toTarefa(tarefaRequest, republica);
 
@@ -76,7 +76,7 @@ public class TarefaService {
 
     public TarefaResponse update(Long id, TarefaRequest tarefaRequest) {
         Tarefa tarefa = tarefaRepository.findById(id)
-                .orElseThrow(() -> new TarefaNotFoundException(id.toString()));
+                .orElseThrow(() -> new TarefaNotFoundException(id));
 
         TarefaMapper.INSTANCE.updateTarefaFromRequest(tarefaRequest, tarefa);
 
@@ -106,7 +106,7 @@ public class TarefaService {
 
     public void delete(Long id) {
         Tarefa tarefa = tarefaRepository.findById(id)
-                .orElseThrow(() -> new TarefaNotFoundException(id.toString()));
+                .orElseThrow(() -> new TarefaNotFoundException(id));
 
         tarefaRepository.delete(tarefa);
     }
@@ -114,10 +114,10 @@ public class TarefaService {
     @Transactional
     public void resolver(Long idMorador, Long idTarefa, MoradorTarefaResolver comentario) {
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         Tarefa tarefa = tarefaRepository.findById(idTarefa)
-                .orElseThrow(() -> new TarefaNotFoundException(idTarefa.toString()));
+                .orElseThrow(() -> new TarefaNotFoundException(idTarefa));
 
         MoradorTarefa moradorTarefa = moradorTarefaRepository.findById(new MoradorTarefaId(morador, tarefa))
                 .orElseThrow();
@@ -128,7 +128,7 @@ public class TarefaService {
         moradorTarefaRepository.save(moradorTarefa);
 
         tarefa = tarefaRepository.findById(idTarefa)
-                .orElseThrow(() -> new TarefaNotFoundException(idTarefa.toString()));
+                .orElseThrow(() -> new TarefaNotFoundException(idTarefa));
 
         boolean controle = false;
 

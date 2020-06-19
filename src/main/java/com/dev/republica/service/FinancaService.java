@@ -36,24 +36,24 @@ public class FinancaService {
 
     public FinancaResponse getFinanca(Long id) {
         Financa financa = financaRepository.findById(id)
-                .orElseThrow(() -> new FinancaNotFoundException(id.toString()));
+                .orElseThrow(() -> new FinancaNotFoundException(id));
 
         return FinancaMapper.INSTANCE.financaToResponse(financa);
     }
 
     public List<FinancaResponse> getFinancaByRepublica(Long id) {
         Republica republica = republicaRepository.findById(id)
-                .orElseThrow(() -> new RepublicaNotFoundException(id.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(id));
 
         return FinancaMapper.INSTANCE.financasToResponse(financaRepository.findByRepublica(republica));
     }
 
     public List<FinancaResponse> getFinancaByRepublicaAndMorador(Long idRepublica, Long idMorador) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         return FinancaMapper.INSTANCE.financasToResponse(financaRepository.findByRepublicaAndMorador(republica, morador));
     }
@@ -61,7 +61,7 @@ public class FinancaService {
     @Transactional
     public void save(FinancaRequest financaRequest, Long idRepublica) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         List<Morador> moradores = moradorRepository.findAllById(financaRequest.getMoradoresIds());
 
@@ -90,7 +90,7 @@ public class FinancaService {
     @Transactional
     public FinancaResponse update(Long id, FinancaRequest financaRequest) {
         Financa financa = financaRepository.findById(id)
-                .orElseThrow(() -> new FinancaNotFoundException(id.toString()));
+                .orElseThrow(() -> new FinancaNotFoundException(id));
 
         FinancaMapper.INSTANCE.updateFinancaFromRequest(financaRequest, financa);
 
@@ -121,17 +121,17 @@ public class FinancaService {
 
     public void delete(Long id) {
         Financa financa = financaRepository.findById(id)
-                .orElseThrow(() -> new FinancaNotFoundException(id.toString()));
+                .orElseThrow(() -> new FinancaNotFoundException(id));
 
         financaRepository.delete(financa);
     }
 
     public void pagar(Long idMorador, Long idFinanca) {
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         Financa financa = financaRepository.findById(idFinanca)
-                .orElseThrow(() -> new FinancaNotFoundException(idFinanca.toString()));
+                .orElseThrow(() -> new FinancaNotFoundException(idFinanca));
 
         FinancaMorador financaMorador = financaMoradorRepository.findById(new FinancaMoradorId(financa, morador))
                 .orElseThrow();
@@ -141,7 +141,7 @@ public class FinancaService {
         financaMoradorRepository.save(financaMorador);
 
         financa = financaRepository.findById(idFinanca)
-                .orElseThrow(() -> new FinancaNotFoundException(idFinanca.toString()));
+                .orElseThrow(() -> new FinancaNotFoundException(idFinanca));
 
         boolean controle = false;
 
@@ -158,7 +158,7 @@ public class FinancaService {
 
     public DataChart getChart(@PathVariable Long idRepublica, @PathVariable int mes, @PathVariable int ano) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         LocalDate inicio = LocalDate.of(ano, mes, 1);
         LocalDate termino = inicio.plusMonths(1);

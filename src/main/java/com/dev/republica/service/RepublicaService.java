@@ -41,7 +41,7 @@ public class RepublicaService {
     @Transactional(readOnly = true)
     public RepublicaResponse getRepublica(Long id) {
         Republica republica = republicaRepository.findById(id)
-                .orElseThrow(() -> new RepublicaNotFoundException(id.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(id));
 
         return RepublicaMapper.INSTANCE.republicaToResponse(republica);
     }
@@ -71,7 +71,7 @@ public class RepublicaService {
 
     public ResponseEntity<RepublicaResponse> update(Long id, RepublicaRequest republicaRequest) {
         Republica republica = republicaRepository.findById(id)
-                .orElseThrow(() -> new RepublicaNotFoundException(id.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(id));
 
         if ((republica.getNumeroVagas() - republica.getNumeroVagasDisponiveis()) > republicaRequest.getNumeroVagas()) {
             return ResponseEntity.badRequest().build();
@@ -90,10 +90,10 @@ public class RepublicaService {
     @Transactional
     public boolean adicionarMorador(Long idRepublica, Long idMorador) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         boolean status = republica.adicionarMorador(morador);
 
@@ -117,10 +117,10 @@ public class RepublicaService {
     @Transactional
     public boolean removerMorador(Long idRepublica, Long idMorador) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         boolean status = republica.removerMorador(morador);
 
@@ -146,12 +146,12 @@ public class RepublicaService {
     @Transactional
     public boolean alterarRepresentante(Long idRepublica, Long idNovoRepresentante) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador antigoRepresentante = republica.getRepresentante();
 
         Morador novoRepresentante = moradorRepository.findById(idNovoRepresentante)
-                .orElseThrow(() -> new MoradorNotFoundException(idNovoRepresentante.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idNovoRepresentante));
 
         if (novoRepresentante.getRepublica().equals(republica)) {
             republica.alterarRepresentante(novoRepresentante);

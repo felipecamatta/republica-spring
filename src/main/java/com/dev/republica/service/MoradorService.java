@@ -30,7 +30,7 @@ public class MoradorService {
     @Transactional(readOnly = true)
     public MoradorResponse getMorador(Long id) {
         Morador morador = moradorRepository.findById(id)
-                .orElseThrow(() -> new MoradorNotFoundException("Morador com o id " + id.toString() + " não foi encontrado."));
+                .orElseThrow(() -> new MoradorNotFoundException(id));
         return MoradorMapper.INSTANCE.moradorToResponse(morador);
     }
 
@@ -40,7 +40,7 @@ public class MoradorService {
 
     public MoradorResponse update(Long id, MoradorRequest moradorRequest) {
         Morador morador = moradorRepository.findById(id)
-                .orElseThrow(() -> new MoradorNotFoundException(id.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(id));
 
         MoradorMapper.INSTANCE.updateMoradorFromRequest(moradorRequest, morador);
 

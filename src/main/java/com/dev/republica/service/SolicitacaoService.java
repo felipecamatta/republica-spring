@@ -1,12 +1,10 @@
 package com.dev.republica.service;
 
 import com.dev.republica.dto.SolicitacaoResponse;
-import com.dev.republica.exception.ConviteNotFound;
 import com.dev.republica.exception.MoradorNotFoundException;
 import com.dev.republica.exception.RepublicaNotFoundException;
 import com.dev.republica.exception.SolicitacaoNotFoundException;
 import com.dev.republica.mapper.SolicitacaoMapper;
-import com.dev.republica.model.Convite;
 import com.dev.republica.model.Morador;
 import com.dev.republica.model.Republica;
 import com.dev.republica.model.Solicitacao;
@@ -30,31 +28,31 @@ public class SolicitacaoService {
 
     public List<SolicitacaoResponse> getByMorador(Long idMorador) {
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         return SolicitacaoMapper.INSTANCE.solicitacoesToResponse(solicitacaoRepository.findBySolicitante(morador));
     }
 
     public List<SolicitacaoResponse> getByRepublica(Long idRepublica) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         return SolicitacaoMapper.INSTANCE.solicitacoesToResponse(solicitacaoRepository.findByRepublica(republica));
     }
 
     public void create(Long idRepublica, Long idMorador) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         solicitacaoRepository.save(new Solicitacao(null, morador, republica, "PENDENTE"));
     }
 
     public String aceitar(Long id) {
         Solicitacao solicitacao = solicitacaoRepository.findById(id)
-                .orElseThrow(() -> new SolicitacaoNotFoundException(id.toString()));
+                .orElseThrow(() -> new SolicitacaoNotFoundException(id));
 
         Republica republica = solicitacao.getRepublica();
 
@@ -77,7 +75,7 @@ public class SolicitacaoService {
 
     public void rejeitar(Long id) {
         Solicitacao solicitacao = solicitacaoRepository.findById(id)
-                .orElseThrow(() -> new SolicitacaoNotFoundException(id.toString()));
+                .orElseThrow(() -> new SolicitacaoNotFoundException(id));
 
         solicitacao.setStatus("REJEITADO");
 
@@ -86,7 +84,7 @@ public class SolicitacaoService {
 
     public void delete(Long id) {
         Solicitacao solicitacao = solicitacaoRepository.findById(id)
-                .orElseThrow(() -> new SolicitacaoNotFoundException(id.toString()));
+                .orElseThrow(() -> new SolicitacaoNotFoundException(id));
 
         solicitacaoRepository.delete(solicitacao);
     }

@@ -1,7 +1,7 @@
 package com.dev.republica.service;
 
 import com.dev.republica.dto.ConviteResponse;
-import com.dev.republica.exception.ConviteNotFound;
+import com.dev.republica.exception.ConviteNotFoundException;
 import com.dev.republica.exception.MoradorNotFoundException;
 import com.dev.republica.exception.RepublicaNotFoundException;
 import com.dev.republica.mapper.ConviteMapper;
@@ -28,31 +28,31 @@ public class ConviteService {
 
     public List<ConviteResponse> getByMorador(Long idMorador) {
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         return ConviteMapper.INSTANCE.convitesToResponse(conviteRepository.findByConvidado(morador));
     }
 
     public List<ConviteResponse> getByRepublica(Long idRepublica) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new MoradorNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idRepublica));
 
         return ConviteMapper.INSTANCE.convitesToResponse(conviteRepository.findByRepublica(republica));
     }
 
     public void create(Long idRepublica, Long idMorador) {
         Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         conviteRepository.save(new Convite(null, republica, morador, "PENDENTE"));
     }
 
     public String aceitar(Long id) {
         Convite convite = conviteRepository.findById(id)
-                .orElseThrow(() -> new ConviteNotFound(id.toString()));
+                .orElseThrow(() -> new ConviteNotFoundException(id));
 
         Republica republica = convite.getRepublica();
 
@@ -75,7 +75,7 @@ public class ConviteService {
 
     public void rejeitar(Long id) {
         Convite convite = conviteRepository.findById(id)
-                .orElseThrow(() -> new ConviteNotFound(id.toString()));
+                .orElseThrow(() -> new ConviteNotFoundException(id));
 
         convite.setStatus("REJEITADO");
 
@@ -84,7 +84,7 @@ public class ConviteService {
 
     public void delete(Long id) {
         Convite convite = conviteRepository.findById(id)
-                .orElseThrow(() -> new ConviteNotFound(id.toString()));
+                .orElseThrow(() -> new ConviteNotFoundException(id));
 
         conviteRepository.delete(convite);
     }

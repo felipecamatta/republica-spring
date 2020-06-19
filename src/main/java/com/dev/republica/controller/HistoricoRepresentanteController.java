@@ -24,7 +24,7 @@ public class HistoricoRepresentanteController {
     @GetMapping("/republicas/{id}/historico-representante")
     public ResponseEntity<List<HistoricoRepresentanteResponse>> getHistoricoRepresentanteByRepublica(@PathVariable Long id) {
         Republica republica = republicaRepository.findById(id)
-                .orElseThrow(() -> new RepublicaNotFoundException(id.toString()));
+                .orElseThrow(() -> new RepublicaNotFoundException(id));
 
         return ResponseEntity.ok(HistoricoRepresentanteMapper.INSTANCE.historicoRepresentantesToResponse(historicoRepresentanteRepository.findByRepublica(republica)));
     }

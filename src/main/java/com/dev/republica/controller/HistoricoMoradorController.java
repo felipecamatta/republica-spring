@@ -24,7 +24,7 @@ public class HistoricoMoradorController {
     @GetMapping("/moradores/{id}/historico")
     public ResponseEntity<List<HistoricoMoradorResponse>> getHistoricoMoradorByMorador(@PathVariable Long id) {
         Morador morador = moradorRepository.findById(id)
-                .orElseThrow(() -> new MoradorNotFoundException(id.toString()));
+                .orElseThrow(() -> new MoradorNotFoundException(id));
 
         return ResponseEntity.ok(HistoricoMoradorMapper.INSTANCE.historicoMoradoresToResponse(historicoMoradorRepository.findByMorador(morador)));
     }

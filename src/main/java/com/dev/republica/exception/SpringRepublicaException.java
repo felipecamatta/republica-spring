@@ -1,7 +1,9 @@
 package com.dev.republica.exception;
 
 public class SpringRepublicaException extends RuntimeException {
-    public SpringRepublicaException(String exMessage) {
-        super(exMessage);
+
+    public SpringRepublicaException(String message) {
+        super(message);
     }
+
 }

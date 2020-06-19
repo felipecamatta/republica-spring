@@ -1,7 +1,9 @@
 package com.dev.republica.exception;
 
 public class MoradorNotFoundException extends RuntimeException {
-    public MoradorNotFoundException(String message) {
-        super(message);
+
+    public MoradorNotFoundException(Long id) {
+        super("Não foi possível encontrar morado com o id " + id);
     }
+    
 }
