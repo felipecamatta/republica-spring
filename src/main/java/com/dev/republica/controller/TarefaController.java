@@ -7,6 +7,7 @@ import com.dev.republica.service.TarefaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,17 +33,20 @@ public class TarefaController {
         return ResponseEntity.ok(tarefaService.getTarefaByRepublicaAndMorador(idRepublica, idMorador));
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/republicas/{idRepublica}/tarefas")
     public ResponseEntity<Void> create(@RequestBody TarefaRequest tarefaRequest, @PathVariable Long idRepublica) {
         tarefaService.save(tarefaRequest, idRepublica);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @PutMapping("tarefas/{id}")
     public ResponseEntity<TarefaResponse> update(@PathVariable Long id, @RequestBody TarefaRequest tarefaRequest) {
         return ResponseEntity.ok(tarefaService.update(id, tarefaRequest));
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @DeleteMapping("/tarefas/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         tarefaService.delete(id);

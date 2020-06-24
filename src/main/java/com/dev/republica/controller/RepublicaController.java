@@ -34,11 +34,13 @@ public class RepublicaController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @PutMapping("/{id}")
     public ResponseEntity<RepublicaResponse> update(@PathVariable Long id, @RequestBody RepublicaRequest republicaRequest) {
         return republicaService.update(id, republicaRequest);
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @DeleteMapping
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         republicaService.delete(id);

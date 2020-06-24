@@ -7,6 +7,7 @@ import com.dev.republica.service.FinancaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,17 +33,20 @@ public class FinancaController {
         return ResponseEntity.ok(financaService.getFinancaByRepublicaAndMorador(idRepublica, idMorador));
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/republicas/{idRepublica}/financas")
     public ResponseEntity<Void> create(@RequestBody FinancaRequest financaRequest, @PathVariable Long idRepublica) {
         financaService.save(financaRequest, idRepublica);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @PutMapping("/financas/{id}")
     public ResponseEntity<FinancaResponse> update(@PathVariable Long id, @RequestBody FinancaRequest financaRequest) {
         return ResponseEntity.ok(financaService.update(id, financaRequest));
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @DeleteMapping("/financas/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         financaService.delete(id);

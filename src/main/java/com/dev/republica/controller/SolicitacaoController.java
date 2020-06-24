@@ -5,6 +5,7 @@ import com.dev.republica.service.SolicitacaoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,11 +32,13 @@ public class SolicitacaoController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/republicas/{idRepublica}/solicitacoes/{id}")
     public ResponseEntity<String> aceitar(@PathVariable Long id) {
         return ResponseEntity.ok(solicitacaoService.aceitar(id));
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @DeleteMapping("/republicas/{idRepublica}/solicitacoes/{id}")
     public ResponseEntity<Void> rejeitar(@PathVariable Long id) {
         solicitacaoService.rejeitar(id);

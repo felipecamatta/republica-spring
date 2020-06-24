@@ -5,6 +5,7 @@ import com.dev.republica.service.ConviteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class ConviteController {
         return ResponseEntity.ok(conviteService.getByMorador(idMorador));
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/republicas/{idRepublica}/convidar/{idConvidado}")
     public ResponseEntity<Void> create(@PathVariable Long idRepublica, @PathVariable Long idConvidado) {
         conviteService.create(idRepublica, idConvidado);
@@ -42,6 +44,7 @@ public class ConviteController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
     @DeleteMapping("convites/{idConvite}")
     public ResponseEntity<Void> delete(@PathVariable Long idConvite) {
         conviteService.delete(idConvite);
