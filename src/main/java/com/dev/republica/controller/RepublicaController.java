@@ -42,9 +42,8 @@ public class RepublicaController {
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @DeleteMapping
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        republicaService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        return ResponseEntity.ok().body(republicaService.delete(id));
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")

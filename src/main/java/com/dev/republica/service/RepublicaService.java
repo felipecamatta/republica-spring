@@ -24,6 +24,7 @@ public class RepublicaService {
 
     private final AuthService authService;
     private final RoleService roleService;
+    private final FinancaRepository financaRepository;
     private final HistoricoMoradorRepository historicoMoradorRepository;
     private final HistoricoRepresentanteRepository historicoRepresentanteRepository;
     private final MoradorRepository moradorRepository;
@@ -84,7 +85,37 @@ public class RepublicaService {
         return ResponseEntity.ok().body(RepublicaMapper.INSTANCE.republicaToResponse(republica));
     }
 
-    public void delete(Long id) {
+    public String delete(Long idRepublica) {
+        Republica republica = republicaRepository.findById(idRepublica)
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
+
+        List<Financa> financas = financaRepository.findByRepublica(republica);
+
+        boolean flag = true;
+
+        for (Financa financa : financas) {
+            if (!financa.isEfetivado()) {
+                flag = false;
+                break;
+            }
+        }
+
+        if (flag) {
+            for (Morador morador : republica.getMoradores()) {
+                morador.setRepublica(null);
+                morador.setRepresentante(false);
+
+                HistoricoMorador historicoMorador = historicoMoradorRepository.findTopByMoradorOrderByIdDesc(morador);
+                historicoMorador.setDataSaida(new Date());
+                historicoMoradorRepository.save(historicoMorador);
+
+                moradorRepository.save(morador);
+
+                return "República excluída!";
+            }
+        }
+
+        return "Não foi possível excluir a república! Despesas pendentes";
     }
 
     @Transactional
