@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -20,11 +21,14 @@ public class MoradorTarefa {
 
     private boolean finalizada;
 
+    private Date dataFinalizada;
+
     public MoradorTarefa(Morador morador, Tarefa tarefa) {
         pk = new MoradorTarefaId();
         this.pk.setMorador(morador);
         this.pk.setTarefa(tarefa);
         this.finalizada = false;
+        this.dataFinalizada = null;
     }
 
 }

@@ -137,6 +137,7 @@ public class FinancaService {
                 .orElseThrow();
 
         financaMorador.setPago(true);
+        financaMorador.setDataPagamento(new java.util.Date());
 
         financaMoradorRepository.save(financaMorador);
 

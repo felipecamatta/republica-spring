@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -20,12 +21,15 @@ public class FinancaMorador {
 
     private boolean pago;
 
+    private Date dataPagamento;
+
     public FinancaMorador(Financa financa, Morador morador, float valor) {
         pk = new FinancaMoradorId();
         pk.setFinanca(financa);
         pk.setMorador(morador);
         this.valor = valor;
         this.pago = false;
+        this.dataPagamento = null;
     }
 
 }
