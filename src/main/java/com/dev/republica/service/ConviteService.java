@@ -1,9 +1,7 @@
 package com.dev.republica.service;
 
 import com.dev.republica.dto.ConviteResponse;
-import com.dev.republica.exception.ConviteNotFoundException;
-import com.dev.republica.exception.MoradorNotFoundException;
-import com.dev.republica.exception.RepublicaNotFoundException;
+import com.dev.republica.exception.*;
 import com.dev.republica.mapper.ConviteMapper;
 import com.dev.republica.model.Convite;
 import com.dev.republica.model.Morador;
@@ -50,7 +48,7 @@ public class ConviteService {
         conviteRepository.save(new Convite(null, republica, morador, "PENDENTE"));
     }
 
-    public String aceitar(Long id) {
+    public void aceitar(Long id) {
         Convite convite = conviteRepository.findById(id)
                 .orElseThrow(() -> new ConviteNotFoundException(id));
 
@@ -59,7 +57,7 @@ public class ConviteService {
         Morador morador = convite.getConvidado();
 
         if (morador.getRepublica() != null)
-            return "Você já reside em uma república. Saia da mesma antes de aceitar o convite";
+            throw new MoradorHasRepublicaException();
 
         boolean add = republica.adicionarMorador(morador);
 
@@ -67,10 +65,8 @@ public class ConviteService {
             convite.setStatus("ACEITO");
 
             conviteRepository.save(convite);
-
-            return "Convite aceito.";
         } else
-            return "República cheia";
+            throw new RepublicaFullException();
     }
 
     public void rejeitar(Long id) {

@@ -35,7 +35,7 @@ public class FeedbackController {
     @DeleteMapping("/feedbacks/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         feedbackService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/feedbacks/{id}/resolver")

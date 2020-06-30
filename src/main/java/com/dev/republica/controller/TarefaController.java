@@ -50,7 +50,7 @@ public class TarefaController {
     @DeleteMapping("/tarefas/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         tarefaService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/republicas/{idRepublica}/morador/{idMorador}/tarefas/{idTarefa}/resolver")

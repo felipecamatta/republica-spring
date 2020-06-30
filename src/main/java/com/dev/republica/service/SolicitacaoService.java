@@ -1,9 +1,7 @@
 package com.dev.republica.service;
 
 import com.dev.republica.dto.SolicitacaoResponse;
-import com.dev.republica.exception.MoradorNotFoundException;
-import com.dev.republica.exception.RepublicaNotFoundException;
-import com.dev.republica.exception.SolicitacaoNotFoundException;
+import com.dev.republica.exception.*;
 import com.dev.republica.mapper.SolicitacaoMapper;
 import com.dev.republica.model.Morador;
 import com.dev.republica.model.Republica;
@@ -50,7 +48,7 @@ public class SolicitacaoService {
         solicitacaoRepository.save(new Solicitacao(null, morador, republica, "PENDENTE"));
     }
 
-    public String aceitar(Long id) {
+    public void aceitar(Long id) {
         Solicitacao solicitacao = solicitacaoRepository.findById(id)
                 .orElseThrow(() -> new SolicitacaoNotFoundException(id));
 
@@ -59,18 +57,15 @@ public class SolicitacaoService {
         Morador morador = solicitacao.getSolicitante();
 
         if (morador.getRepublica() != null)
-            return "Você já reside em uma república. Saia da mesma antes de aceitar o convite";
+            throw new MoradorHasRepublicaException();
 
         boolean add = republica.adicionarMorador(morador);
 
         if (add) {
             solicitacao.setStatus("ACEITO");
-
             solicitacaoRepository.save(solicitacao);
-
-            return "Convite aceito.";
         } else
-            return "República cheia";
+            throw new RepublicaFullException();
     }
 
     public void rejeitar(Long id) {

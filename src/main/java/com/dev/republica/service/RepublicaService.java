@@ -3,6 +3,7 @@ package com.dev.republica.service;
 import com.dev.republica.dto.RepublicaRequest;
 import com.dev.republica.dto.RepublicaResponse;
 import com.dev.republica.exception.MoradorNotFoundException;
+import com.dev.republica.exception.RepublicaHasDespesaPendenteException;
 import com.dev.republica.exception.RepublicaNotFoundException;
 import com.dev.republica.mapper.RepublicaMapper;
 import com.dev.republica.model.*;
@@ -85,7 +86,7 @@ public class RepublicaService {
         return ResponseEntity.ok().body(RepublicaMapper.INSTANCE.republicaToResponse(republica));
     }
 
-    public String delete(Long idRepublica) {
+    public void delete(Long idRepublica) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
@@ -100,22 +101,20 @@ public class RepublicaService {
             }
         }
 
-        if (flag) {
-            for (Morador morador : republica.getMoradores()) {
-                morador.setRepublica(null);
-                morador.setRepresentante(false);
-
-                HistoricoMorador historicoMorador = historicoMoradorRepository.findTopByMoradorOrderByIdDesc(morador);
-                historicoMorador.setDataSaida(new Date());
-                historicoMoradorRepository.save(historicoMorador);
-
-                moradorRepository.save(morador);
-
-                return "República excluída!";
-            }
+        if (!flag) {
+            throw new RepublicaHasDespesaPendenteException();
         }
 
-        return "Não foi possível excluir a república! Despesas pendentes";
+        for (Morador morador : republica.getMoradores()) {
+            morador.setRepublica(null);
+            morador.setRepresentante(false);
+
+            HistoricoMorador historicoMorador = historicoMoradorRepository.findTopByMoradorOrderByIdDesc(morador);
+            historicoMorador.setDataSaida(new Date());
+            historicoMoradorRepository.save(historicoMorador);
+
+            moradorRepository.save(morador);
+        }
     }
 
     @Transactional

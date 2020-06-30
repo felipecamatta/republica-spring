@@ -50,7 +50,7 @@ public class FinancaController {
     @DeleteMapping("/financas/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         financaService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/republicas/{idRepublica}/morador/{idMorador}/financas/{idFinanca}/pagar")

@@ -34,8 +34,8 @@ public class SolicitacaoController {
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/solicitacoes/{id}/aceitar")
-    public ResponseEntity<String> aceitar(@PathVariable Long id) {
-        return ResponseEntity.ok(solicitacaoService.aceitar(id));
+    public ResponseEntity<Void> aceitar(@PathVariable Long id) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
@@ -48,7 +48,7 @@ public class SolicitacaoController {
     @DeleteMapping("/solicitacoes/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         solicitacaoService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

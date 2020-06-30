@@ -34,8 +34,8 @@ public class ConviteController {
     }
 
     @PostMapping("/convites/{id}/aceitar")
-    public ResponseEntity<String> aceitar(@PathVariable Long id) {
-        return ResponseEntity.ok(conviteService.aceitar(id));
+    public ResponseEntity<Void> aceitar(@PathVariable Long id) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/convites/{id}/rejeitar")
@@ -48,7 +48,7 @@ public class ConviteController {
     @DeleteMapping("/convites/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         conviteService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
