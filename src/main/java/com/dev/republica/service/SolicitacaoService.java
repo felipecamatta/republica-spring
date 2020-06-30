@@ -3,12 +3,8 @@ package com.dev.republica.service;
 import com.dev.republica.dto.SolicitacaoResponse;
 import com.dev.republica.exception.*;
 import com.dev.republica.mapper.SolicitacaoMapper;
-import com.dev.republica.model.Morador;
-import com.dev.republica.model.Republica;
-import com.dev.republica.model.Solicitacao;
-import com.dev.republica.repository.MoradorRepository;
-import com.dev.republica.repository.RepublicaRepository;
-import com.dev.republica.repository.SolicitacaoRepository;
+import com.dev.republica.model.*;
+import com.dev.republica.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +16,12 @@ import java.util.List;
 @Transactional
 public class SolicitacaoService {
 
+    private final RoleService roleService;
+    private final HistoricoMoradorRepository historicoMoradorRepository;
     private final SolicitacaoRepository solicitacaoRepository;
     private final MoradorRepository moradorRepository;
     private final RepublicaRepository republicaRepository;
+    private final UserRepository userRepository;
 
     public List<SolicitacaoResponse> getByMorador(Long idMorador) {
         Morador morador = moradorRepository.findById(idMorador)
@@ -64,6 +63,16 @@ public class SolicitacaoService {
         if (add) {
             solicitacao.setStatus("ACEITO");
             solicitacaoRepository.save(solicitacao);
+
+            moradorRepository.save(morador);
+            republicaRepository.save(republica);
+
+            User userMorador = userRepository.findById(morador.getId())
+                    .orElseThrow();
+            userMorador.addRole(roleService.getMoradorRole());
+            userRepository.save(userMorador);
+
+            historicoMoradorRepository.save(new HistoricoMorador(morador, republica));
         } else
             throw new RepublicaFullException();
     }

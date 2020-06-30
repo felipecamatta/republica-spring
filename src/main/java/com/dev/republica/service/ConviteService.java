@@ -3,12 +3,8 @@ package com.dev.republica.service;
 import com.dev.republica.dto.ConviteResponse;
 import com.dev.republica.exception.*;
 import com.dev.republica.mapper.ConviteMapper;
-import com.dev.republica.model.Convite;
-import com.dev.republica.model.Morador;
-import com.dev.republica.model.Republica;
-import com.dev.republica.repository.ConviteRepository;
-import com.dev.republica.repository.MoradorRepository;
-import com.dev.republica.repository.RepublicaRepository;
+import com.dev.republica.model.*;
+import com.dev.republica.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +16,12 @@ import java.util.List;
 @Transactional
 public class ConviteService {
 
+    private final RoleService roleService;
+    private final HistoricoMoradorRepository historicoMoradorRepository;
     private final ConviteRepository conviteRepository;
     private final MoradorRepository moradorRepository;
     private final RepublicaRepository republicaRepository;
+    private final UserRepository userRepository;
 
     public List<ConviteResponse> getByMorador(Long idMorador) {
         Morador morador = moradorRepository.findById(idMorador)
@@ -63,8 +62,17 @@ public class ConviteService {
 
         if (add) {
             convite.setStatus("ACEITO");
-
             conviteRepository.save(convite);
+
+            moradorRepository.save(morador);
+            republicaRepository.save(republica);
+
+            User userMorador = userRepository.findById(morador.getId())
+                    .orElseThrow();
+            userMorador.addRole(roleService.getMoradorRole());
+            userRepository.save(userMorador);
+
+            historicoMoradorRepository.save(new HistoricoMorador(morador, republica));
         } else
             throw new RepublicaFullException();
     }
