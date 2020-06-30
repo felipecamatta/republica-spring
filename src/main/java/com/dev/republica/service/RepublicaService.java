@@ -119,62 +119,6 @@ public class RepublicaService {
     }
 
     @Transactional
-    public boolean adicionarMorador(Long idRepublica, Long idMorador) {
-        Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
-
-        Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
-
-        boolean status = republica.adicionarMorador(morador);
-
-        if (status) {
-            moradorRepository.save(morador);
-            republicaRepository.save(republica);
-
-            User userMorador = userRepository.findById(morador.getId())
-                    .orElseThrow();
-            userMorador.addRole(roleService.getMoradorRole());
-            userRepository.save(userMorador);
-
-            historicoMoradorRepository.save(new HistoricoMorador(morador, republica));
-
-            return true;
-        }
-
-        return false;
-    }
-
-    @Transactional
-    public boolean removerMorador(Long idRepublica, Long idMorador) {
-        Republica republica = republicaRepository.findById(idRepublica)
-                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
-
-        Morador morador = moradorRepository.findById(idMorador)
-                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
-
-        boolean status = republica.removerMorador(morador);
-
-        if (status) {
-            moradorRepository.save(morador);
-            republicaRepository.save(republica);
-
-            User userMorador = userRepository.findById(morador.getId())
-                    .orElseThrow();
-            userMorador.removeRole(roleService.getMoradorRole());
-            userRepository.save(userMorador);
-
-            HistoricoMorador historicoMorador = historicoMoradorRepository.findTopByMoradorOrderByIdDesc(morador);
-            historicoMorador.setDataSaida(new Date());
-            historicoMoradorRepository.save(historicoMorador);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    @Transactional
     public boolean alterarRepresentante(Long idRepublica, Long idNovoRepresentante) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));

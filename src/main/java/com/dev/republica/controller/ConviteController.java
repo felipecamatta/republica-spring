@@ -21,7 +21,7 @@ public class ConviteController {
         return ResponseEntity.ok(conviteService.getByRepublica(idRepublica));
     }
 
-    @GetMapping("moradores/{idMorador}/convites")
+    @GetMapping("/moradores/{idMorador}/convites")
     public ResponseEntity<List<ConviteResponse>> getByMorador(@PathVariable Long idMorador) {
         return ResponseEntity.ok(conviteService.getByMorador(idMorador));
     }
@@ -33,21 +33,21 @@ public class ConviteController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/moradores/{idMorador}/convites/{id}")
+    @PostMapping("/convites/{id}/aceitar")
     public ResponseEntity<String> aceitar(@PathVariable Long id) {
         return ResponseEntity.ok(conviteService.aceitar(id));
     }
 
-    @DeleteMapping("morador/{idMorador}/convites/{id}")
+    @DeleteMapping("/convites/{id}/rejeitar")
     public ResponseEntity<Void> rejeitar(@PathVariable Long id) {
         conviteService.rejeitar(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
-    @DeleteMapping("convites/{idConvite}")
-    public ResponseEntity<Void> delete(@PathVariable Long idConvite) {
-        conviteService.delete(idConvite);
+    @DeleteMapping("/convites/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        conviteService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

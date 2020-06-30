@@ -28,7 +28,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefaService.getTarefaByRepublica(idRepublica));
     }
 
-    @GetMapping("republicas/{idRepublica}/morador/{idMorador}/tarefas")
+    @GetMapping("/republicas/{idRepublica}/morador/{idMorador}/tarefas")
     public ResponseEntity<List<TarefaResponse>> getTarefaByRepublicaAndMorador(@PathVariable Long idRepublica, @PathVariable Long idMorador) {
         return ResponseEntity.ok(tarefaService.getTarefaByRepublicaAndMorador(idRepublica, idMorador));
     }
@@ -41,7 +41,7 @@ public class TarefaController {
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
-    @PutMapping("tarefas/{id}")
+    @PutMapping("/tarefas/{id}")
     public ResponseEntity<TarefaResponse> update(@PathVariable Long id, @RequestBody TarefaRequest tarefaRequest) {
         return ResponseEntity.ok(tarefaService.update(id, tarefaRequest));
     }
@@ -53,7 +53,7 @@ public class TarefaController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("republicas/{idRepublica}/morador/{idMorador}/tarefas/{idTarefa}/resolver")
+    @PostMapping("/republicas/{idRepublica}/morador/{idMorador}/tarefas/{idTarefa}/resolver")
     public ResponseEntity<Void> resolver(@PathVariable Long idRepublica, @PathVariable Long idMorador, @PathVariable Long idTarefa, @RequestBody MoradorTarefaResolver comentario) {
         tarefaService.resolver(idMorador, idTarefa, comentario);
         return new ResponseEntity<>(HttpStatus.OK);

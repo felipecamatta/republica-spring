@@ -21,10 +21,10 @@ public class HistoricoMoradorController {
     private final MoradorRepository moradorRepository;
     private final HistoricoMoradorRepository historicoMoradorRepository;
 
-    @GetMapping("/moradores/{id}/historico")
-    public ResponseEntity<List<HistoricoMoradorResponse>> getHistoricoMoradorByMorador(@PathVariable Long id) {
-        Morador morador = moradorRepository.findById(id)
-                .orElseThrow(() -> new MoradorNotFoundException(id));
+    @GetMapping("/moradores/{idMorador}/historico")
+    public ResponseEntity<List<HistoricoMoradorResponse>> getHistoricoMoradorByMorador(@PathVariable Long idMorador) {
+        Morador morador = moradorRepository.findById(idMorador)
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
         return ResponseEntity.ok(HistoricoMoradorMapper.INSTANCE.historicoMoradoresToResponse(historicoMoradorRepository.findByMorador(morador)));
     }

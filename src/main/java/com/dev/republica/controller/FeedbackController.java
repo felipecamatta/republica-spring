@@ -16,29 +16,29 @@ public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
-    @GetMapping("feedbacks/{id}")
+    @GetMapping("/feedbacks/{id}")
     public ResponseEntity<FeedbackResponse> getFeedback(@PathVariable Long id) {
         return ResponseEntity.ok(feedbackService.getFeedback(id));
     }
 
-    @GetMapping("republicas/{idRepublica}/feedbacks")
+    @GetMapping("/republicas/{idRepublica}/feedbacks")
     public ResponseEntity<List<FeedbackResponse>> getFeedbackByRepublica(@PathVariable Long idRepublica) {
         return ResponseEntity.ok(feedbackService.getFeedbackByRepublica(idRepublica));
     }
 
-    @PostMapping("republicas/{idRepublica}/feedbacks")
+    @PostMapping("/republicas/{idRepublica}/feedbacks")
     public ResponseEntity<Void> create(@RequestBody FeedbackRequest feedbackRequest, @PathVariable Long idRepublica) {
         feedbackService.save(feedbackRequest, idRepublica);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("feedbacks/{id}")
+    @DeleteMapping("/feedbacks/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         feedbackService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("feedbacks/{id}/resolver")
+    @PostMapping("/feedbacks/{id}/resolver")
     public ResponseEntity<Void> resolver(@PathVariable Long id) {
         feedbackService.resolver(id);
         return new ResponseEntity<>(HttpStatus.OK);

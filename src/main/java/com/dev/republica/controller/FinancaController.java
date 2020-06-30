@@ -28,7 +28,7 @@ public class FinancaController {
         return ResponseEntity.ok(financaService.getFinancaByRepublica(idRepublica));
     }
 
-    @GetMapping("republicas/{idRepublica}/morador/{idMorador}/financas")
+    @GetMapping("/republicas/{idRepublica}/morador/{idMorador}/financas")
     public ResponseEntity<List<FinancaResponse>> getFinancaByRepublicaAndMorador(@PathVariable Long idRepublica, @PathVariable Long idMorador) {
         return ResponseEntity.ok(financaService.getFinancaByRepublicaAndMorador(idRepublica, idMorador));
     }
@@ -53,13 +53,13 @@ public class FinancaController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/republicas/{idRepublica}/morador/{idMorador}/financas/{idFinanca}/resolver")
+    @PostMapping("/republicas/{idRepublica}/morador/{idMorador}/financas/{idFinanca}/pagar")
     public ResponseEntity<Void> pagar(@PathVariable Long idRepublica, @PathVariable Long idMorador, @PathVariable Long idFinanca) {
         financaService.pagar(idMorador, idFinanca);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("republicas/{idRepublica}/financas/chart/{mes}/{ano}")
+    @GetMapping("/republicas/{idRepublica}/financas/chart/{mes}/{ano}")
     public ResponseEntity<DataChart> chart(@PathVariable Long idRepublica, @PathVariable int mes, @PathVariable int ano) {
         return ResponseEntity.ok(financaService.getChart(idRepublica, mes, ano));
     }

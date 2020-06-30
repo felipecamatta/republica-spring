@@ -41,27 +41,9 @@ public class RepublicaController {
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         return ResponseEntity.ok().body(republicaService.delete(id));
-    }
-
-    @PreAuthorize("hasRole('REPRESENTANTE')")
-    @PostMapping("/{idRepublica}/adicionarmorador/{idMorador}")
-    public ResponseEntity<Void> adicionarMorador(@PathVariable Long idRepublica, @PathVariable Long idMorador) {
-        if (republicaService.adicionarMorador(idRepublica, idMorador)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-    }
-
-    @PreAuthorize("hasRole('REPRESENTANTE')")
-    @DeleteMapping("/{idRepublica}/removermorador/{idMorador}")
-    public ResponseEntity<Void> removerMorador(@PathVariable Long idRepublica, @PathVariable Long idMorador) {
-        if (republicaService.removerMorador(idRepublica, idMorador)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")

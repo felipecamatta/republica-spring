@@ -21,7 +21,7 @@ public class SolicitacaoController {
         return ResponseEntity.ok(solicitacaoService.getByRepublica(idRepublica));
     }
 
-    @GetMapping("moradores/{idMorador}/solicitacoes")
+    @GetMapping("/moradores/{idMorador}/solicitacoes")
     public ResponseEntity<List<SolicitacaoResponse>> getByMorador(@PathVariable Long idMorador) {
         return ResponseEntity.ok(solicitacaoService.getByMorador(idMorador));
     }
@@ -33,21 +33,21 @@ public class SolicitacaoController {
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
-    @PostMapping("/republicas/{idRepublica}/solicitacoes/{id}")
+    @PostMapping("/solicitacoes/{id}/aceitar")
     public ResponseEntity<String> aceitar(@PathVariable Long id) {
         return ResponseEntity.ok(solicitacaoService.aceitar(id));
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
-    @DeleteMapping("/republicas/{idRepublica}/solicitacoes/{id}")
+    @DeleteMapping("/solicitacoes/{id}/rejeitar")
     public ResponseEntity<Void> rejeitar(@PathVariable Long id) {
         solicitacaoService.rejeitar(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("solicitacoes/{idSolicitacao}")
-    public ResponseEntity<Void> delete(@PathVariable Long idSolicitacao) {
-        solicitacaoService.delete(idSolicitacao);
+    @DeleteMapping("/solicitacoes/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        solicitacaoService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

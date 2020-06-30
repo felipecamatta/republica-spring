@@ -21,10 +21,10 @@ public class HistoricoRepresentanteController {
     private final HistoricoRepresentanteRepository historicoRepresentanteRepository;
     private final RepublicaRepository republicaRepository;
 
-    @GetMapping("/republicas/{id}/historico-representante")
-    public ResponseEntity<List<HistoricoRepresentanteResponse>> getHistoricoRepresentanteByRepublica(@PathVariable Long id) {
-        Republica republica = republicaRepository.findById(id)
-                .orElseThrow(() -> new RepublicaNotFoundException(id));
+    @GetMapping("/republicas/{idRepublica}/historico-representante")
+    public ResponseEntity<List<HistoricoRepresentanteResponse>> getHistoricoRepresentanteByRepublica(@PathVariable Long idRepublica) {
+        Republica republica = republicaRepository.findById(idRepublica)
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         return ResponseEntity.ok(HistoricoRepresentanteMapper.INSTANCE.historicoRepresentantesToResponse(historicoRepresentanteRepository.findByRepublica(republica)));
     }
