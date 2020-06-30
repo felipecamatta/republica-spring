@@ -14,7 +14,7 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     List<Tarefa> findByRepublica(Republica republica);
 
-    @Query("select t from Tarefa t inner join t.moradorTarefas mt on t.id = mt.pk.tarefa.id where t.republica = ?1 and mt.pk.morador = ?2")
+    @Query("select t from Tarefa t join fetch t.moradorTarefas mt where t.republica = ?1 and mt.pk.morador = ?2")
     List<Tarefa> findByRepublicaAndMorador(Republica republica, Morador morador);
 
 }
