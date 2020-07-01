@@ -38,7 +38,7 @@ public class RepublicaController {
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PutMapping("/{id}")
     public ResponseEntity<RepublicaResponse> update(@PathVariable Long id, @Valid @RequestBody RepublicaRequest republicaRequest) {
-        return republicaService.update(id, republicaRequest);
+        return ResponseEntity.ok(republicaService.update(id, republicaRequest));
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")

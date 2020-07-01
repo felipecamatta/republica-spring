@@ -5,12 +5,12 @@ import com.dev.republica.dto.RepublicaResponse;
 import com.dev.republica.exception.MoradorNotFoundException;
 import com.dev.republica.exception.RepublicaHasDespesaPendenteException;
 import com.dev.republica.exception.RepublicaNotFoundException;
+import com.dev.republica.exception.RepublicaNumeroDeVagasException;
 import com.dev.republica.mapper.RepublicaMapper;
 import com.dev.republica.model.*;
 import com.dev.republica.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,19 +71,19 @@ public class RepublicaService {
         moradorRepository.save(representante);
     }
 
-    public ResponseEntity<RepublicaResponse> update(Long id, RepublicaRequest republicaRequest) {
+    public RepublicaResponse update(Long id, RepublicaRequest republicaRequest) {
         Republica republica = republicaRepository.findById(id)
                 .orElseThrow(() -> new RepublicaNotFoundException(id));
 
         if ((republica.getNumeroVagas() - republica.getNumeroVagasDisponiveis()) > republicaRequest.getNumeroVagas()) {
-            return ResponseEntity.badRequest().build();
+            throw new RepublicaNumeroDeVagasException();
         }
 
         RepublicaMapper.INSTANCE.updateRepublicaFromRequest(republicaRequest, republica);
 
         republicaRepository.save(republica);
 
-        return ResponseEntity.ok().body(RepublicaMapper.INSTANCE.republicaToResponse(republica));
+        return RepublicaMapper.INSTANCE.republicaToResponse(republica);
     }
 
     public void delete(Long idRepublica) {
