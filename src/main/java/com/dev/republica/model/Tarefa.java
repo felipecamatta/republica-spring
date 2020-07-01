@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,10 +27,8 @@ public class Tarefa {
     @NotNull
     private Date dataAgendamento;
 
-    @NotBlank
     private String descricao;
 
-    @NotNull
     private Date dataTermino;
 
     @NotNull

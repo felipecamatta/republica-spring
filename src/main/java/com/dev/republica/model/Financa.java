@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,19 +23,15 @@ public class Financa {
     @ManyToOne
     private Republica republica;
 
-    @NotBlank
     private String tipo; // despesa ou receita
 
-    @NotBlank
     private String descricao;
 
-    @NotNull
     private float valor;
 
     @NotNull
     private Date dataLancamento;
 
-    @NotNull
     private Date dataVencimentoRecebimento;
 
     @NotNull

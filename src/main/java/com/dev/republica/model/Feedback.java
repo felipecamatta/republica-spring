@@ -20,10 +20,8 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String tipo;
 
-    @NotBlank
     private String descricao;
 
     @NotNull
@@ -32,7 +30,6 @@ public class Feedback {
     @ManyToOne
     private Morador morador;
 
-    @NotNull
     private boolean anonimo;
 
     @ManyToOne

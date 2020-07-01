@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,13 +29,13 @@ public class MoradorController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody MoradorRequest moradorRequest) {
+    public ResponseEntity<Void> create(@Valid @RequestBody MoradorRequest moradorRequest) {
         moradorService.save(moradorRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MoradorResponse> update(@PathVariable Long id, @RequestBody MoradorRequest moradorRequest) {
+    public ResponseEntity<MoradorResponse> update(@PathVariable Long id, @Valid @RequestBody MoradorRequest moradorRequest) {
         return ResponseEntity.ok().body(moradorService.update(id, moradorRequest));
     }
 

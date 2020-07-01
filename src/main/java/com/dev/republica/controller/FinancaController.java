@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,14 +36,14 @@ public class FinancaController {
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/republicas/{idRepublica}/financas")
-    public ResponseEntity<Void> create(@RequestBody FinancaRequest financaRequest, @PathVariable Long idRepublica) {
+    public ResponseEntity<Void> create(@Valid @RequestBody FinancaRequest financaRequest, @PathVariable Long idRepublica) {
         financaService.save(financaRequest, idRepublica);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PutMapping("/financas/{id}")
-    public ResponseEntity<FinancaResponse> update(@PathVariable Long id, @RequestBody FinancaRequest financaRequest) {
+    public ResponseEntity<FinancaResponse> update(@PathVariable Long id, @Valid @RequestBody FinancaRequest financaRequest) {
         return ResponseEntity.ok(financaService.update(id, financaRequest));
     }
 

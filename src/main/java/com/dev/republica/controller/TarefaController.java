@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,14 +36,14 @@ public class TarefaController {
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/republicas/{idRepublica}/tarefas")
-    public ResponseEntity<Void> create(@RequestBody TarefaRequest tarefaRequest, @PathVariable Long idRepublica) {
+    public ResponseEntity<Void> create(@Valid @RequestBody TarefaRequest tarefaRequest, @PathVariable Long idRepublica) {
         tarefaService.save(tarefaRequest, idRepublica);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PutMapping("/tarefas/{id}")
-    public ResponseEntity<TarefaResponse> update(@PathVariable Long id, @RequestBody TarefaRequest tarefaRequest) {
+    public ResponseEntity<TarefaResponse> update(@PathVariable Long id, @Valid @RequestBody TarefaRequest tarefaRequest) {
         return ResponseEntity.ok(tarefaService.update(id, tarefaRequest));
     }
 

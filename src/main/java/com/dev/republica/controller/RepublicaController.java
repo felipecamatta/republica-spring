@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,14 +30,14 @@ public class RepublicaController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody RepublicaRequest republicaRequest) {
+    public ResponseEntity<Void> create(@Valid @RequestBody RepublicaRequest republicaRequest) {
         republicaService.save(republicaRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PutMapping("/{id}")
-    public ResponseEntity<RepublicaResponse> update(@PathVariable Long id, @RequestBody RepublicaRequest republicaRequest) {
+    public ResponseEntity<RepublicaResponse> update(@PathVariable Long id, @Valid @RequestBody RepublicaRequest republicaRequest) {
         return republicaService.update(id, republicaRequest);
     }
 
