@@ -4,6 +4,7 @@ import com.dev.republica.dto.AuthenticationResponse;
 import com.dev.republica.dto.LoginRequest;
 import com.dev.republica.dto.RefreshTokenRequest;
 import com.dev.republica.dto.RegisterRequest;
+import com.dev.republica.exception.UsernameAlreadyExistException;
 import com.dev.republica.model.Authorities;
 import com.dev.republica.model.Role;
 import com.dev.republica.model.User;
@@ -39,6 +40,11 @@ public class AuthService {
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
+
+        User verifyUsername = userRepository.findByUsername(registerRequest.getUsername()).orElse(null);
+        if (verifyUsername != null)
+            throw new UsernameAlreadyExistException();
+
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
