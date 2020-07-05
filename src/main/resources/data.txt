@@ -1,4 +1,4 @@
 INSERT INTO role (id, name)
 VALUES  (1, 'ROLE_SEMTETO'),
         (2, 'ROLE_MORADOR'),
-        (3, 'ROLE_REPRENSENTANTE');
+        (3, 'ROLE_REPRESENTANTE');
