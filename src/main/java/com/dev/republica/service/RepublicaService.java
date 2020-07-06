@@ -2,10 +2,7 @@ package com.dev.republica.service;
 
 import com.dev.republica.dto.RepublicaRequest;
 import com.dev.republica.dto.RepublicaResponse;
-import com.dev.republica.exception.MoradorNotFoundException;
-import com.dev.republica.exception.RepublicaHasDespesaPendenteException;
-import com.dev.republica.exception.RepublicaNotFoundException;
-import com.dev.republica.exception.RepublicaNumeroDeVagasException;
+import com.dev.republica.exception.*;
 import com.dev.republica.mapper.RepublicaMapper;
 import com.dev.republica.model.*;
 import com.dev.republica.repository.*;
@@ -162,6 +159,32 @@ public class RepublicaService {
         }
 
         return false;
+    }
+
+    @Transactional
+    public void removerMorador(Long idRepublica, Long idMorador) {
+        Republica republica = republicaRepository.findById(idRepublica)
+                .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
+
+        Morador morador = moradorRepository.findById(idMorador)
+                .orElseThrow(() -> new MoradorNotFoundException(idMorador));
+
+        boolean status = republica.removerMorador(morador);
+
+        if (!status)
+            throw new MoradorIsRepresentanteException();
+
+        moradorRepository.save(morador);
+        republicaRepository.save(republica);
+
+        User userMorador = userRepository.findById(morador.getId())
+                .orElseThrow();
+        userMorador.removeRole(roleService.getMoradorRole());
+        userRepository.save(userMorador);
+
+        HistoricoMorador historicoMorador = historicoMoradorRepository.findTopByMoradorOrderByIdDesc(morador);
+        historicoMorador.setDataSaida(new Date());
+        historicoMoradorRepository.save(historicoMorador);
     }
 
 }

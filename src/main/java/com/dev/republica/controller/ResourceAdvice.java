@@ -26,7 +26,9 @@ public class ResourceAdvice extends ResponseEntityExceptionHandler {
         response.sendError(HttpStatus.NOT_FOUND.value());
     }
 
-    @ExceptionHandler({MoradorHasRepublicaException.class, RepublicaFullException.class, RepublicaHasDespesaPendenteException.class, RepublicaNumeroDeVagasException.class, UsernameAlreadyExistException.class})
+    @ExceptionHandler({MoradorHasRepublicaException.class, RepublicaFullException.class,
+            RepublicaHasDespesaPendenteException.class, RepublicaNumeroDeVagasException.class,
+            UsernameAlreadyExistException.class, MoradorIsRepresentanteException.class})
     public void handleException(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }

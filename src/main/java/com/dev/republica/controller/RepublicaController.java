@@ -63,4 +63,11 @@ public class RepublicaController {
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @PreAuthorize("hasRole('REPRESENTANTE')")
+    @DeleteMapping("/{idRepublica}/removermorador/{idMorador}")
+    public ResponseEntity<Void> removerMorador(@PathVariable Long idRepublica, @PathVariable Long idMorador) {
+        republicaService.removerMorador(idRepublica, idMorador);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
