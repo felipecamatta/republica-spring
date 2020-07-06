@@ -39,6 +39,7 @@ public class ConviteController {
 
     @PostMapping("/convites/{id}/aceitar")
     public ResponseEntity<Void> aceitar(@PathVariable Long id) {
+        conviteService.aceitar(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
