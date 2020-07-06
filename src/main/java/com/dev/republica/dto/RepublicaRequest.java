@@ -22,7 +22,7 @@ public class RepublicaRequest {
     @NotBlank(message = "Vantagens é obrigatório")
     private String vantagens;
 
-    @NotBlank(message = "Valor médio das despesas é obrigatório")
+    @NotNull(message = "Valor médio das despesas é obrigatório")
     private float valorMedioDespesas;
 
     @NotNull(message = "Número de vagas é obrigatório")
@@ -36,7 +36,7 @@ public class RepublicaRequest {
     @NotBlank(message = "Gênero é obrigatório")
     private String genero;
 
-    @Pattern(regexp = "(/[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)")
+    @Size(max = 230, message = "Link deve ter no máximo 230 caracteres")
     private String linkEstatuto;
 
 }

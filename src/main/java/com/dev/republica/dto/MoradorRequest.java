@@ -19,18 +19,18 @@ public class MoradorRequest {
 
     private String apelido;
 
-    @Pattern(regexp = "(/([(][0-9]{2}[)])\\s[0-9]{4,5}\\-[0-9]{4}/)", message = "Telefone inválido")
+    @Pattern(regexp = "([(][0-9]{2}[)])\\s[0-9]{4,5}\\-[0-9]{4}", message = "Telefone inválido")
     @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
 
     @NotBlank(message = "Link da rede social é obrigatório")
     private String linkRedeSocial;
 
-    @Pattern(regexp = "(/([(][0-9]{2}[)])\\s[0-9]{4,5}\\-[0-9]{4}/)", message = "Telefone do Responsável(1) inválido")
+    @Pattern(regexp = "([(][0-9]{2}[)])\\s[0-9]{4,5}\\-[0-9]{4}", message = "Telefone do Responsável(1) inválido")
     @NotBlank(message = "Telefone do responsável(1) é obrigatório")
     private String telefoneResponsavel1;
 
-    @Pattern(regexp = "(/([(][0-9]{2}[)])\\s[0-9]{4,5}\\-[0-9]{4}/)", message = "Telefone do Responsável(2) inválido")
+    @Pattern(regexp = "([(][0-9]{2}[)])\\s[0-9]{4,5}\\-[0-9]{4}", message = "Telefone do Responsável(2) inválido")
     @NotBlank(message = "Telefone do responsável(2) é obrigatório")
     private String telefoneResponsavel2;
 

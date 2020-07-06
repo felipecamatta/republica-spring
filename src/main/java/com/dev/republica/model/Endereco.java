@@ -24,8 +24,8 @@ public class Endereco {
     @NotBlank(message = "Logradouro é obrigatório")
     private String logradouro;
 
-    @Pattern(regexp = "(/^[0-9]{5}-[0-9]{3}$/)", message = "CEP inválido")
-    @NotBlank(message = "CEP é orbigatório")
+    @Pattern(regexp = "^\\d{5}-\\d{3}$", message = "CEP inválido")
+    @NotBlank(message = "CEP é obrigatório")
     private String cep;
 
     @NotBlank(message = "Bairro é obrigatório")
@@ -34,7 +34,7 @@ public class Endereco {
     @NotBlank(message = "Cidade é obrigatório")
     private String cidade;
 
-    @Pattern(regexp = "(/(A(C|L|P|M))|BA|(CE)|(DF)|(GO)|(ES)|(M(A|T|S|G))|(P(A|B|R|E|I))|(R(J|N|S|O|R))|(S(P|C|E))|(TO)/)")
+    @Pattern(regexp = "(A(C|L|P|M))|BA|(CE)|(DF)|(GO)|(ES)|(M(A|T|S|G))|(P(A|B|R|E|I))|(R(J|N|S|O|R))|(S(P|C|E))|(TO)")
     @NotBlank(message = "Estado é obrigatório")
     private String estado;
 
