@@ -14,6 +14,9 @@ import com.dev.republica.repository.RepublicaRepository;
 import lombok.AllArgsConstructor;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,11 +39,13 @@ public class FeedbackService {
         return FeedbackMapper.INSTANCE.feedbackToResponse(feedback);
     }
 
-    public List<FeedbackResponse> getFeedbackByRepublica(Long idRepublica) {
+    public List<FeedbackResponse> getFeedbackByRepublica(Long idRepublica, String ordenarPor, int pagina, int itemPorPagina) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
-        return FeedbackMapper.INSTANCE.feedbacksToResponse(feedbackRepository.findByRepublica(republica));
+        Page<Feedback> feedbacks = feedbackRepository.findByRepublica(republica, PageRequest.of(pagina, itemPorPagina, Sort.by(ordenarPor)));
+
+        return FeedbackMapper.INSTANCE.feedbacksToResponse(feedbacks.getContent());
     }
 
     public void save(FeedbackRequest feedbackRequest, Long idRepublica) {

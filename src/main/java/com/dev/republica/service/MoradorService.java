@@ -8,6 +8,9 @@ import com.dev.republica.model.Morador;
 import com.dev.republica.repository.MoradorRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +26,11 @@ public class MoradorService {
     private final MoradorRepository moradorRepository;
 
     @Transactional(readOnly = true)
-    public List<MoradorResponse> getAllMoradores(String nome) {
-        return MoradorMapper.INSTANCE.moradoresToResponse(moradorRepository.findByNomeContaining(nome));
+    public List<MoradorResponse> getAllMoradores(String nome, String apelido, String sexo, String ordenarPor, int pagina, int itemsPorPagina) {
+        Page<Morador> moradores = moradorRepository.findByNomeContainingIgnoreCaseAndApelidoContainingIgnoreCaseAndSexoContainingIgnoreCase(
+                nome, apelido, sexo, PageRequest.of(pagina, itemsPorPagina, Sort.by(ordenarPor)));
+
+        return MoradorMapper.INSTANCE.moradoresToResponse(moradores.getContent());
     }
 
     @Transactional(readOnly = true)

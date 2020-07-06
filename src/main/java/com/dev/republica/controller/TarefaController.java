@@ -25,13 +25,19 @@ public class TarefaController {
     }
 
     @GetMapping("/republicas/{idRepublica}/tarefas")
-    public ResponseEntity<List<TarefaResponse>> getTarefaByRepublica(@PathVariable Long idRepublica) {
-        return ResponseEntity.ok(tarefaService.getTarefaByRepublica(idRepublica));
+    public ResponseEntity<List<TarefaResponse>> getTarefaByRepublica(@PathVariable Long idRepublica,
+                                                                     @RequestParam(defaultValue = "dataTermino") String ordenarPor,
+                                                                     @RequestParam(defaultValue = "0") int pagina,
+                                                                     @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(tarefaService.getTarefaByRepublica(idRepublica, ordenarPor, pagina, itemsPorPagina));
     }
 
     @GetMapping("/republicas/{idRepublica}/morador/{idMorador}/tarefas")
-    public ResponseEntity<List<TarefaResponse>> getTarefaByRepublicaAndMorador(@PathVariable Long idRepublica, @PathVariable Long idMorador) {
-        return ResponseEntity.ok(tarefaService.getTarefaByRepublicaAndMorador(idRepublica, idMorador));
+    public ResponseEntity<List<TarefaResponse>> getTarefaByRepublicaAndMorador(@PathVariable Long idRepublica, @PathVariable Long idMorador,
+                                                                               @RequestParam(defaultValue = "dataTermino") String ordenarPor,
+                                                                               @RequestParam(defaultValue = "0") int pagina,
+                                                                               @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(tarefaService.getTarefaByRepublicaAndMorador(idRepublica, idMorador, ordenarPor, pagina, itemsPorPagina));
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")

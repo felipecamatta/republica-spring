@@ -13,6 +13,9 @@ import com.dev.republica.repository.MoradorTarefaRepository;
 import com.dev.republica.repository.RepublicaRepository;
 import com.dev.republica.repository.TarefaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,21 +41,25 @@ public class TarefaService {
         return TarefaMapper.INSTANCE.tarefaToResponse(tarefa);
     }
 
-    public List<TarefaResponse> getTarefaByRepublica(Long id) {
+    public List<TarefaResponse> getTarefaByRepublica(Long id, String ordenarPor, int pagina, int itemsPorPagina) {
         Republica republica = republicaRepository.findById(id)
                 .orElseThrow(() -> new RepublicaNotFoundException(id));
 
-        return TarefaMapper.INSTANCE.tarefasToResponse(tarefaRepository.findByRepublica(republica));
+        Page<Tarefa> tarefas = tarefaRepository.findByRepublica(republica, PageRequest.of(pagina, itemsPorPagina, Sort.by(ordenarPor)));
+
+        return TarefaMapper.INSTANCE.tarefasToResponse(tarefas.getContent());
     }
 
-    public List<TarefaResponse> getTarefaByRepublicaAndMorador(Long idRepublica, Long idMorador) {
+    public List<TarefaResponse> getTarefaByRepublicaAndMorador(Long idRepublica, Long idMorador, String ordenarPor, int pagina, int itemsPorPagina) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = moradorRepository.findById(idMorador)
                 .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
-        return TarefaMapper.INSTANCE.tarefasToResponse(tarefaRepository.findByRepublicaAndMorador(republica, morador));
+        Page<Tarefa> tarefas = tarefaRepository.findByRepublicaAndMorador(republica, morador, PageRequest.of(pagina, itemsPorPagina, Sort.by(ordenarPor)));
+
+        return TarefaMapper.INSTANCE.tarefasToResponse(tarefas.getContent());
     }
 
     @Transactional

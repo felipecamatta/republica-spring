@@ -19,8 +19,13 @@ public class MoradorController {
     private final MoradorService moradorService;
 
     @GetMapping
-    public ResponseEntity<List<MoradorResponse>> getAllMoradores(@RequestParam(defaultValue = "") String nome) {
-        return ResponseEntity.ok().body(moradorService.getAllMoradores(nome));
+    public ResponseEntity<List<MoradorResponse>> getAllMoradores(@RequestParam(defaultValue = "") String nome,
+                                                                 @RequestParam(defaultValue = "") String apelido,
+                                                                 @RequestParam(defaultValue = "") String sexo,
+                                                                 @RequestParam(defaultValue = "nome") String ordenarPor,
+                                                                 @RequestParam(defaultValue = "0") int pagina,
+                                                                 @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok().body(moradorService.getAllMoradores(nome, apelido, sexo, ordenarPor, pagina, itemsPorPagina));
     }
 
     @GetMapping("/{id}")

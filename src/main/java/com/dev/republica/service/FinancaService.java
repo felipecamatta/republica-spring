@@ -13,13 +13,16 @@ import com.dev.republica.repository.FinancaRepository;
 import com.dev.republica.repository.MoradorRepository;
 import com.dev.republica.repository.RepublicaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,21 +44,32 @@ public class FinancaService {
         return FinancaMapper.INSTANCE.financaToResponse(financa);
     }
 
-    public List<FinancaResponse> getFinancaByRepublica(Long id) {
+    public List<FinancaResponse> getFinancaByRepublica(Long id, String tipo, String descricao, Date dataInicio,
+                                                       Date dataFim, Boolean efetivado, String ordenarPor, int pagina,
+                                                       int itemsPorPagina) {
         Republica republica = republicaRepository.findById(id)
                 .orElseThrow(() -> new RepublicaNotFoundException(id));
 
-        return FinancaMapper.INSTANCE.financasToResponse(financaRepository.findByRepublica(republica));
+        Page<Financa> financas = financaRepository.findByRepublica(
+                republica, tipo, ("%" + descricao + "%"), dataInicio, dataFim, efetivado, PageRequest.of(pagina, itemsPorPagina, Sort.by(ordenarPor)));
+
+        return FinancaMapper.INSTANCE.financasToResponse(financas.getContent());
     }
 
-    public List<FinancaResponse> getFinancaByRepublicaAndMorador(Long idRepublica, Long idMorador) {
+    public List<FinancaResponse> getFinancaByRepublicaAndMorador(Long idRepublica, Long idMorador, String tipo,
+                                                                 String descricao, Date dataInicio, Date dataFim,
+                                                                 String ordenarPor, int pagina,
+                                                                 int itemsPorPagina) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
         Morador morador = moradorRepository.findById(idMorador)
                 .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
-        return FinancaMapper.INSTANCE.financasToResponse(financaRepository.findByRepublicaAndMorador(republica, morador));
+        Page<Financa> financas = financaRepository.findByRepublicaAndMorador(republica, morador, tipo,
+                ("%" + descricao + "%"), dataInicio, dataFim, PageRequest.of(pagina, itemsPorPagina, Sort.by(ordenarPor)));
+
+        return FinancaMapper.INSTANCE.financasToResponse(financas.getContent());
     }
 
     @Transactional
@@ -164,10 +178,10 @@ public class FinancaService {
         LocalDate inicio = LocalDate.of(ano, mes, 1);
         LocalDate termino = inicio.plusMonths(1);
 
-        Map<Integer, Float> despesas = graficoService.getTotalDespesas(republica, Date.valueOf(inicio),
-                Date.valueOf(termino));
-        Map<Integer, Float> receitas = graficoService.getTotalReceitas(republica, Date.valueOf(inicio),
-                Date.valueOf(termino));
+        Map<Integer, Float> despesas = graficoService.getTotalDespesas(republica, java.sql.Date.valueOf(inicio),
+                java.sql.Date.valueOf(termino));
+        Map<Integer, Float> receitas = graficoService.getTotalReceitas(republica, java.sql.Date.valueOf(inicio),
+                java.sql.Date.valueOf(termino));
 
         return new DataChart(idRepublica, despesas, receitas);
     }

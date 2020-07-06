@@ -11,6 +11,9 @@ import com.dev.republica.model.*;
 import com.dev.republica.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,11 +36,11 @@ public class RepublicaService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<RepublicaResponse> getRepublicasDisponiveis(String nome, String vantagens) {
-        List<Republica> disponiveis = republicaRepository.findByNumeroVagasDisponiveisGreaterThanAndNomeContainingAndVantagensContaining(
-                0, nome, vantagens);
+    public List<RepublicaResponse> getRepublicasDisponiveis(String nome, String vantagens, float despesaMin, float despesaMax, String ordenarPor, int pagina, int itemsPorPagina) {
+        Page<Republica> disponiveis = republicaRepository.findByNumeroVagasDisponiveisGreaterThanAndNomeContainingIgnoreCaseAndVantagensContainingIgnoreCaseAndAndValorMedioDespesasBetween(0,
+                nome, vantagens, despesaMin, despesaMax, PageRequest.of(pagina, itemsPorPagina, Sort.by(ordenarPor)));
 
-        return RepublicaMapper.INSTANCE.republicasToResponse(disponiveis);
+        return RepublicaMapper.INSTANCE.republicasToResponse(disponiveis.getContent());
     }
 
     @Transactional(readOnly = true)

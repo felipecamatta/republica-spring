@@ -17,13 +17,17 @@ public class SolicitacaoController {
     private final SolicitacaoService solicitacaoService;
 
     @GetMapping("/republicas/{idRepublica}/solicitacoes")
-    public ResponseEntity<List<SolicitacaoResponse>> getByRepublica(@PathVariable Long idRepublica) {
-        return ResponseEntity.ok(solicitacaoService.getByRepublica(idRepublica));
+    public ResponseEntity<List<SolicitacaoResponse>> getByRepublica(@PathVariable Long idRepublica,
+                                                                    @RequestParam(defaultValue = "0") int pagina,
+                                                                    @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(solicitacaoService.getByRepublica(idRepublica, pagina, itemsPorPagina));
     }
 
     @GetMapping("/moradores/{idMorador}/solicitacoes")
-    public ResponseEntity<List<SolicitacaoResponse>> getByMorador(@PathVariable Long idMorador) {
-        return ResponseEntity.ok(solicitacaoService.getByMorador(idMorador));
+    public ResponseEntity<List<SolicitacaoResponse>> getByMorador(@PathVariable Long idMorador,
+                                                                  @RequestParam(defaultValue = "0") int pagina,
+                                                                  @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(solicitacaoService.getByMorador(idMorador, pagina, itemsPorPagina));
     }
 
     @PostMapping("/moradores/{idMorador}/solicitar/{idRepublica}")
@@ -35,6 +39,7 @@ public class SolicitacaoController {
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/solicitacoes/{id}/aceitar")
     public ResponseEntity<Void> aceitar(@PathVariable Long id) {
+        solicitacaoService.aceitar(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

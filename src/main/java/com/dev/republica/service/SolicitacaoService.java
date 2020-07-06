@@ -6,6 +6,8 @@ import com.dev.republica.mapper.SolicitacaoMapper;
 import com.dev.republica.model.*;
 import com.dev.republica.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,18 +25,24 @@ public class SolicitacaoService {
     private final RepublicaRepository republicaRepository;
     private final UserRepository userRepository;
 
-    public List<SolicitacaoResponse> getByMorador(Long idMorador) {
+    public List<SolicitacaoResponse> getByMorador(Long idMorador, int pagina, int itemsPorPagina) {
         Morador morador = moradorRepository.findById(idMorador)
                 .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
-        return SolicitacaoMapper.INSTANCE.solicitacoesToResponse(solicitacaoRepository.findBySolicitante(morador));
+        Page<Solicitacao> solicitacoes = solicitacaoRepository.findBySolicitante(
+                morador, PageRequest.of(pagina, itemsPorPagina));
+
+        return SolicitacaoMapper.INSTANCE.solicitacoesToResponse(solicitacoes.getContent());
     }
 
-    public List<SolicitacaoResponse> getByRepublica(Long idRepublica) {
+    public List<SolicitacaoResponse> getByRepublica(Long idRepublica, int pagina, int itemsPorPagina) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new RepublicaNotFoundException(idRepublica));
 
-        return SolicitacaoMapper.INSTANCE.solicitacoesToResponse(solicitacaoRepository.findByRepublica(republica));
+        Page<Solicitacao> solicitacoes = solicitacaoRepository.findByRepublica(
+                republica, PageRequest.of(pagina, itemsPorPagina));
+
+        return SolicitacaoMapper.INSTANCE.solicitacoesToResponse(solicitacoes.getContent());
     }
 
     public void create(Long idRepublica, Long idMorador) {

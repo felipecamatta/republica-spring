@@ -5,12 +5,14 @@ import com.dev.republica.dto.FinancaRequest;
 import com.dev.republica.dto.FinancaResponse;
 import com.dev.republica.service.FinancaService;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -25,14 +27,35 @@ public class FinancaController {
     }
 
     @GetMapping("/republicas/{idRepublica}/financas")
-    public ResponseEntity<List<FinancaResponse>> getFinancaByRepublica(@PathVariable Long idRepublica) {
-        return ResponseEntity.ok(financaService.getFinancaByRepublica(idRepublica));
+    public ResponseEntity<List<FinancaResponse>> getFinancaByRepublica(@PathVariable Long idRepublica,
+                                                                       @RequestParam(defaultValue = "") String tipo,
+                                                                       @RequestParam(defaultValue = "") String descricao,
+                                                                       @RequestParam(defaultValue = "#{new java.util.Date(0)}")
+                                                                       @DateTimeFormat(pattern = "dd-MM-yyyy") Date dataInicio,
+                                                                       @RequestParam(defaultValue = "#{new java.util.Date()}")
+                                                                       @DateTimeFormat(pattern = "dd-MM-yyyy") Date dataFim,
+                                                                       @RequestParam(required = false) Boolean efetivado,
+                                                                       @RequestParam(defaultValue = "id") String ordenarPor,
+                                                                       @RequestParam(defaultValue = "0") int pagina,
+                                                                       @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(financaService.getFinancaByRepublica(idRepublica, tipo, descricao, dataInicio, dataFim, efetivado, ordenarPor, pagina, itemsPorPagina));
     }
 
     @GetMapping("/republicas/{idRepublica}/morador/{idMorador}/financas")
-    public ResponseEntity<List<FinancaResponse>> getFinancaByRepublicaAndMorador(@PathVariable Long idRepublica, @PathVariable Long idMorador) {
-        return ResponseEntity.ok(financaService.getFinancaByRepublicaAndMorador(idRepublica, idMorador));
+    public ResponseEntity<List<FinancaResponse>> getFinancaByRepublicaAndMorador(@PathVariable Long idRepublica,
+                                                                                 @PathVariable Long idMorador,
+                                                                                 @RequestParam(defaultValue = "") String tipo,
+                                                                                 @RequestParam(defaultValue = "") String descricao,
+                                                                                 @RequestParam(defaultValue = "#{new java.util.Date(0)}")
+                                                                                 @DateTimeFormat(pattern = "dd-MM-yyyy") Date dataInicio,
+                                                                                 @RequestParam(defaultValue = "#{new java.util.Date()}")
+                                                                                 @DateTimeFormat(pattern = "dd-MM-yyyy") Date dataFim,
+                                                                                 @RequestParam(defaultValue = "id") String ordenarPor,
+                                                                                 @RequestParam(defaultValue = "0") int pagina,
+                                                                                 @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(financaService.getFinancaByRepublicaAndMorador(idRepublica, idMorador, tipo, descricao, dataInicio, dataFim, ordenarPor, pagina, itemsPorPagina));
     }
+
 
     @PreAuthorize("hasRole('REPRESENTANTE')")
     @PostMapping("/republicas/{idRepublica}/financas")

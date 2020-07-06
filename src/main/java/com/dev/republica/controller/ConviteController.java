@@ -17,13 +17,17 @@ public class ConviteController {
     private final ConviteService conviteService;
 
     @GetMapping("/republicas/{idRepublica}/convites")
-    public ResponseEntity<List<ConviteResponse>> getByRepublica(@PathVariable Long idRepublica) {
-        return ResponseEntity.ok(conviteService.getByRepublica(idRepublica));
+    public ResponseEntity<List<ConviteResponse>> getByRepublica(@PathVariable Long idRepublica,
+                                                                @RequestParam(defaultValue = "0") int pagina,
+                                                                @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(conviteService.getByRepublica(idRepublica, pagina, itemsPorPagina));
     }
 
     @GetMapping("/moradores/{idMorador}/convites")
-    public ResponseEntity<List<ConviteResponse>> getByMorador(@PathVariable Long idMorador) {
-        return ResponseEntity.ok(conviteService.getByMorador(idMorador));
+    public ResponseEntity<List<ConviteResponse>> getByMorador(@PathVariable Long idMorador,
+                                                              @RequestParam(defaultValue = "0") int pagina,
+                                                              @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(conviteService.getByMorador(idMorador, pagina, itemsPorPagina));
     }
 
     @PreAuthorize("hasRole('REPRESENTANTE')")

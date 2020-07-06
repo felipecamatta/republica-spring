@@ -6,6 +6,8 @@ import com.dev.republica.mapper.ConviteMapper;
 import com.dev.republica.model.*;
 import com.dev.republica.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,18 +25,24 @@ public class ConviteService {
     private final RepublicaRepository republicaRepository;
     private final UserRepository userRepository;
 
-    public List<ConviteResponse> getByMorador(Long idMorador) {
+    public List<ConviteResponse> getByMorador(Long idMorador, int pagina, int itemsPorPagina) {
         Morador morador = moradorRepository.findById(idMorador)
                 .orElseThrow(() -> new MoradorNotFoundException(idMorador));
 
-        return ConviteMapper.INSTANCE.convitesToResponse(conviteRepository.findByConvidado(morador));
+        Page<Convite> convites = conviteRepository.findByConvidado(morador, PageRequest.of(pagina, itemsPorPagina));
+
+        System.out.println(convites.getContent().size());
+
+        return ConviteMapper.INSTANCE.convitesToResponse(convites.getContent());
     }
 
-    public List<ConviteResponse> getByRepublica(Long idRepublica) {
+    public List<ConviteResponse> getByRepublica(Long idRepublica, int pagina, int itemsPorPagina) {
         Republica republica = republicaRepository.findById(idRepublica)
                 .orElseThrow(() -> new MoradorNotFoundException(idRepublica));
 
-        return ConviteMapper.INSTANCE.convitesToResponse(conviteRepository.findByRepublica(republica));
+        Page<Convite> convites = conviteRepository.findByRepublica(republica, PageRequest.of(pagina, itemsPorPagina));
+
+        return ConviteMapper.INSTANCE.convitesToResponse(convites.getContent());
     }
 
     public void create(Long idRepublica, Long idMorador) {

@@ -23,8 +23,11 @@ public class FeedbackController {
     }
 
     @GetMapping("/republicas/{idRepublica}/feedbacks")
-    public ResponseEntity<List<FeedbackResponse>> getFeedbackByRepublica(@PathVariable Long idRepublica) {
-        return ResponseEntity.ok(feedbackService.getFeedbackByRepublica(idRepublica));
+    public ResponseEntity<List<FeedbackResponse>> getFeedbackByRepublica(@PathVariable Long idRepublica,
+                                                                         @RequestParam(defaultValue = "dataFeedback") String ordenarPor,
+                                                                         @RequestParam(defaultValue = "0") int pagina,
+                                                                         @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok(feedbackService.getFeedbackByRepublica(idRepublica, ordenarPor, pagina, itemsPorPagina));
     }
 
     @PostMapping("/republicas/{idRepublica}/feedbacks")

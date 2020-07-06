@@ -20,8 +20,14 @@ public class RepublicaController {
     private final RepublicaService republicaService;
 
     @GetMapping
-    public ResponseEntity<List<RepublicaResponse>> getRepublicasDisponiveis(@RequestParam(defaultValue = "") String nome, @RequestParam(defaultValue = "") String vantagens) {
-        return ResponseEntity.ok().body(republicaService.getRepublicasDisponiveis(nome, vantagens));
+    public ResponseEntity<List<RepublicaResponse>> getRepublicasDisponiveis(@RequestParam(defaultValue = "") String nome,
+                                                                            @RequestParam(defaultValue = "") String vantagens,
+                                                                            @RequestParam(defaultValue = "0") float despesaMin,
+                                                                            @RequestParam(defaultValue = "9999") float despesaMax,
+                                                                            @RequestParam(defaultValue = "nome") String ordenarPor,
+                                                                            @RequestParam(defaultValue = "0") int pagina,
+                                                                            @RequestParam(defaultValue = "20") int itemsPorPagina) {
+        return ResponseEntity.ok().body(republicaService.getRepublicasDisponiveis(nome, vantagens, despesaMin, despesaMax, ordenarPor, pagina, itemsPorPagina));
     }
 
     @GetMapping("/{id}")
