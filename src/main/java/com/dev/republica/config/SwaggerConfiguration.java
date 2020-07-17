@@ -27,7 +27,7 @@ public class SwaggerConfiguration {
 
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
-                .title("Repuclica API")
+                .title("Republica API")
                 .version("1.0")
                 .description("API for Republica Application")
                 .contact(new Contact("", "", ""))
