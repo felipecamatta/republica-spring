@@ -4,6 +4,7 @@ import com.dev.republica.dto.MoradorTarefaResolver;
 import com.dev.republica.dto.TarefaRequest;
 import com.dev.republica.dto.TarefaResponse;
 import com.dev.republica.exception.MoradorNotFoundException;
+import com.dev.republica.exception.MoradoresIsEmptyException;
 import com.dev.republica.exception.RepublicaNotFoundException;
 import com.dev.republica.exception.TarefaNotFoundException;
 import com.dev.republica.mapper.TarefaMapper;
@@ -71,6 +72,9 @@ public class TarefaService {
 
         List<Morador> moradores = moradorRepository.findAllById(tarefaRequest.getMoradoresIds());
 
+        if (moradores.isEmpty())
+            throw new MoradoresIsEmptyException();
+
         List<MoradorTarefa> list = new ArrayList<>();
 
         for (int i = 0; i < moradores.size(); i++) {
@@ -89,6 +93,9 @@ public class TarefaService {
         TarefaMapper.INSTANCE.updateTarefaFromRequest(tarefaRequest, tarefa);
 
         List<Morador> moradores = moradorRepository.findAllById(tarefaRequest.getMoradoresIds());
+
+        if (moradores.isEmpty())
+            throw new MoradoresIsEmptyException();
 
         List<MoradorTarefa> list = new ArrayList<>();
 

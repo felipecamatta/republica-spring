@@ -5,6 +5,7 @@ import com.dev.republica.dto.FinancaRequest;
 import com.dev.republica.dto.FinancaResponse;
 import com.dev.republica.exception.FinancaNotFoundException;
 import com.dev.republica.exception.MoradorNotFoundException;
+import com.dev.republica.exception.MoradoresIsEmptyException;
 import com.dev.republica.exception.RepublicaNotFoundException;
 import com.dev.republica.mapper.FinancaMapper;
 import com.dev.republica.model.*;
@@ -79,6 +80,9 @@ public class FinancaService {
 
         List<Morador> moradores = moradorRepository.findAllById(financaRequest.getMoradoresIds());
 
+        if (moradores.isEmpty())
+            throw new MoradoresIsEmptyException();
+
         List<FinancaMorador> financaMoradores = new ArrayList<>();
 
         for (int i = 0; i < financaRequest.getNumeroParcelas(); i++) {
@@ -109,6 +113,9 @@ public class FinancaService {
         FinancaMapper.INSTANCE.updateFinancaFromRequest(financaRequest, financa);
 
         List<Morador> moradores = moradorRepository.findAllById(financaRequest.getMoradoresIds());
+
+        if (moradores.isEmpty())
+            throw new MoradoresIsEmptyException();
 
         List<FinancaMorador> list = new ArrayList<>();
 
