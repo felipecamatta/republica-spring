@@ -18,12 +18,11 @@ public class FinancaRequest {
     @NotBlank(message = "Descrição é obrigatório")
     private String descricao;
 
-    @Positive
+    @Positive(message = "Valor deve ser positivo")
     @NotNull(message = "Valor é obrigatório")
     private float valor;
 
-    @Min(1)
-    @Positive
+    @Min(value = 1, message = "Número mínimo de parcelas deve ser 1")
     @NotNull(message = "Número de parcelas é obrigatório")
     private byte numeroParcelas;
 
